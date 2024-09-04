@@ -1,10 +1,11 @@
 import { logo, onboardingSignUpPic } from "@/assets";
+import AdminButton from "@/lib/components/ui/admin-button";
 import LoginForm from "@/lib/components/ui/LoginForm";
 import Image from "next/image";
 
 export default function Home() {
   return (
-    <main className="h-full max-h-[800px] w-full max-w-[980px] items-center justify-center lg:flex">
+    <main className="h-full max-h-[800px] w-full max-w-[1080px] items-center justify-center lg:flex">
       <div className="flex h-full w-full flex-col justify-between px-16 py-8 lg:w-1/2">
         <Image className="object-cover" src={logo} alt="logo" />
         <div className="flex flex-col gap-y-8">
@@ -14,7 +15,10 @@ export default function Home() {
           </div>
           <LoginForm />
         </div>
-        <p className="text-n-1">©carepulse copyright</p>
+        <div className="flex items-center justify-between">
+          <p className="text-n-1">©carepulse copyright</p>
+          <AdminButton />
+        </div>
       </div>
       <div className="hidden h-full w-1/2 lg:block">
         <Image

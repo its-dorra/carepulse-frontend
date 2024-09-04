@@ -11,13 +11,22 @@ const config: Config = {
   theme: {
     extend: {
       backgroundImage: {
-        "gradient-radial": "linear-gradient(to bottom, #82DBF7, #B6F09C)",
+        "gradient-radial": "linear-gradient(to top right, #82DBF7, #B6F09C)",
       },
       colors: {
         background: "#131619",
         foreground: "#1A1D21",
         primaryGreen: "#24AE7C",
         "n-1": "#76828D",
+      },
+      keyframes: {
+        "caret-blink": {
+          "0%,70%,100%": { opacity: "1" },
+          "20%,50%": { opacity: "0" },
+        },
+      },
+      animation: {
+        "caret-blink": "caret-blink 1.25s ease-out infinite",
       },
     },
   },
