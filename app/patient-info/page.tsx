@@ -2,54 +2,62 @@
 
 import { doctors, logo, patientInfo } from "@/assets";
 import DoctorTile from "@/lib/components/DoctorTile";
-import { Calendar } from "@/lib/components/ui/calendar";
+
 import CustomFormField from "@/lib/components/ui/CustomFormField";
 import CustomInput from "@/lib/components/ui/CustomInput";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-} from "@/lib/components/ui/form";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/lib/components/ui/popover";
-import { RadioGroup, RadioGroupItem } from "@/lib/components/ui/radio-group";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/lib/components/ui/select";
-import patientInfoSchema from "@/lib/schemas/patientInfoSchema";
-import { cn } from "@/lib/utils";
+
+import CustomRadioGroup from "@/lib/components/ui/CustomRadioGroup";
+import CustomSelectGroup from "@/lib/components/ui/CustomSelectGroup";
+import DateOfBirth from "@/lib/components/ui/DateOfBirth";
+import { Form, FormField } from "@/lib/components/ui/form";
+
+import { SelectItem } from "@/lib/components/ui/select";
+import patientInfoSchema, {
+  identificationType,
+} from "@/lib/schemas/patientInfoSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { format } from "date-fns";
-import { Calendar as CalendarIcon } from "lucide-react";
+import Dropzone, { useDropzone } from "react-dropzone";
 
 import Image from "next/image";
-import { useForm } from "react-hook-form";
-import { HiOutlinePhone, HiOutlineUser } from "react-icons/hi";
+import { useCallback, useState } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
+import {
+  HiOutlineCloudUpload,
+  HiOutlinePhone,
+  HiOutlineUser,
+} from "react-icons/hi";
 import { z } from "zod";
+import { Button } from "@/lib/components/ui/button";
 
 export default function PatientInfo() {
+  //   const onDrop = useCallback((acceptedFiles: any) => {
+  //     console.log(acceptedFiles[0]);
+  //   }, []);
+  //   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
+  const [preview, setPreview] = useState<ArrayBuffer | string | null>(null);
   const form = useForm<z.infer<typeof patientInfoSchema>>({
     resolver: zodResolver(patientInfoSchema),
     defaultValues: {
-      gender: "Male",
+      //   gender: "Male",
     },
   });
 
-  const onSubmit = function (values: z.infer<typeof patientInfoSchema>) {
+  const {
+    formState: { errors },
+  } = form;
+
+  if (errors) {
+    console.log(errors);
+  }
+
+  const onSubmit: SubmitHandler<z.infer<typeof patientInfoSchema>> = function (
+    values,
+  ) {
     console.log(values);
   };
 
   return (
-    <main className="h-full w-full max-w-[1080px] items-start justify-center lg:flex">
+    <main className="h-dvh w-full max-w-[1080px] items-start justify-center lg:flex">
       <div className="h-full w-full space-y-4 overflow-y-auto overflow-x-clip px-14 py-16">
         <Image className="mb-16 object-cover" src={logo} alt="logo" />
         <div className="flex flex-col gap-y-8">
@@ -90,100 +98,12 @@ export default function PatientInfo() {
                     />
                   </div>
                   <div className="flex h-full flex-col items-center gap-x-6 gap-y-4 sm:flex-row">
-                    <FormField
-                      control={form.control}
-                      name="dateOfBirth"
-                      render={({ field }) => (
-                        <FormItem className="w-full">
-                          <FormLabel className="text-[12px] text-n-1">
-                            Date of birth
-                          </FormLabel>
-                          <Popover>
-                            <PopoverTrigger asChild>
-                              <FormControl>
-                                <div className="rounded-lg border border-white/20 p-0.5 has-[:focus]:bg-gradient-radial">
-                                  <div
-                                    className={cn(
-                                      "flex w-full cursor-pointer items-center bg-foreground p-2 font-normal",
-                                      !field.value && "text-muted-foreground",
-                                    )}
-                                  >
-                                    <CalendarIcon className="mr-2 h-4 w-4 opacity-50" />
-                                    {field.value ? (
-                                      format(field.value, "PPP")
-                                    ) : (
-                                      <span className="text-sm text-n-1/50">
-                                        Select your birthdate
-                                      </span>
-                                    )}
-                                  </div>
-                                </div>
-                              </FormControl>
-                            </PopoverTrigger>
-                            <PopoverContent
-                              className="w-auto p-0"
-                              align="start"
-                            >
-                              <Calendar
-                                mode="single"
-                                selected={field.value}
-                                onSelect={field.onChange}
-                                disabled={(date: Date) =>
-                                  date > new Date() ||
-                                  date < new Date("1900-01-01")
-                                }
-                                className="border-white bg-foreground"
-                                initialFocus
-                              />
-                            </PopoverContent>
-                          </Popover>
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={form.control}
+                    <DateOfBirth form={form} />
+                    <CustomRadioGroup
+                      form={form}
                       name="gender"
-                      render={({ field }) => (
-                        <FormItem className="w-full">
-                          <FormLabel className="text-[12px] text-n-1">
-                            Gender
-                          </FormLabel>
-                          <FormControl>
-                            <RadioGroup
-                              onValueChange={field.onChange}
-                              defaultValue={field.value}
-                              className="flex space-x-1"
-                            >
-                              <FormItem
-                                className={`border-text-n-1 flex w-full items-center gap-x-3 space-y-0 rounded-md border border-dashed ${field.value === "Male" ? "bg-foreground" : ""} p-3`}
-                              >
-                                <FormControl>
-                                  <RadioGroupItem
-                                    className={`${field.value === "Male" ? "bg-gradient-radial" : ""}`}
-                                    value="Male"
-                                  />
-                                </FormControl>
-                                <FormLabel className="font-normal">
-                                  Male
-                                </FormLabel>
-                              </FormItem>
-                              <FormItem
-                                className={`border-text-n-1 flex w-full items-center gap-x-3 space-y-0 rounded-md border border-dashed ${field.value === "Female" ? "bg-foreground" : ""} p-3`}
-                              >
-                                <FormControl>
-                                  <RadioGroupItem
-                                    className={`${field.value === "Female" ? "bg-gradient-radial" : ""}`}
-                                    value="Female"
-                                  />
-                                </FormControl>
-                                <FormLabel className="font-normal">
-                                  Female
-                                </FormLabel>
-                              </FormItem>
-                            </RadioGroup>
-                          </FormControl>
-                        </FormItem>
-                      )}
+                      label="Gender"
+                      items={["Male", "Female"]}
                     />
                   </div>
                   <div className="flex h-full flex-col items-center gap-x-6 gap-y-4 sm:flex-row">
@@ -219,40 +139,20 @@ export default function PatientInfo() {
                 </div>
                 <div className="space-y-4">
                   <p className="text-3xl">Medical Information</p>
-
-                  <FormField
-                    control={form.control}
+                  <CustomSelectGroup
+                    form={form}
+                    items={doctors}
                     name="primaryPhysician"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="text-[12px] text-n-1">
-                          Primary care physician
-                        </FormLabel>
-                        <Select
-                          onValueChange={field.onChange}
-                          defaultValue={field.value}
-                        >
-                          <FormControl>
-                            <SelectTrigger className="border-white/20 bg-foreground">
-                              <SelectValue placeholder="Select a physician" />
-                            </SelectTrigger>
-                          </FormControl>
-                          <SelectContent className="bg-foreground py-2">
-                            {doctors.map((doctor) => (
-                              <SelectItem
-                                className="w-full"
-                                key={doctor.id}
-                                value={doctor.name}
-                              >
-                                <DoctorTile
-                                  img={doctor.imgPath}
-                                  name={doctor.name}
-                                />
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                      </FormItem>
+                    placeholder="Select a physician"
+                    label="Primary care physician"
+                    render={(doctor) => (
+                      <SelectItem
+                        className="w-full"
+                        key={doctor.id}
+                        value={doctor.name}
+                      >
+                        <DoctorTile img={doctor.imgPath} name={doctor.name} />
+                      </SelectItem>
                     )}
                   />
                   <div className="flex h-full flex-col items-center gap-x-6 gap-y-4 sm:flex-row">
@@ -304,13 +204,101 @@ export default function PatientInfo() {
                 </div>
                 <div className="space-y-4">
                   <p className="text-3xl">Identification and Verification</p>
+                  <CustomSelectGroup
+                    form={form}
+                    label="Identification type"
+                    name="identificationType"
+                    placeholder="ID type"
+                    items={identificationType}
+                    render={(id) => {
+                      return (
+                        <SelectItem className="w-full" key={id} value={id}>
+                          {id}
+                        </SelectItem>
+                      );
+                    }}
+                  />
+
+                  <CustomFormField
+                    control={form.control}
+                    name="identificationNumber"
+                    label="Identification number"
+                    placeholder="ex: 1234567"
+                  />
+                  <FormField
+                    control={form.control}
+                    name="idFile"
+                    render={({ field: { onChange, onBlur, value } }) => {
+                      return (
+                        <CustomInput
+                          className="flex w-full items-center justify-center border-dashed bg-foreground"
+                          label="Scanned Copy of Identification Document"
+                        >
+                          {preview && (
+                            <Image
+                              className={`${preview ? "block" : "hidden"} w-full object-contain`}
+                              src={preview}
+                              //   fill
+                              height={320}
+                              width={720}
+                              alt="Selected image"
+                            />
+                          )}
+
+                          <div
+                            className={`${preview ? "hidden" : "block"} flex w-full items-center justify-center`}
+                          >
+                            <Dropzone
+                              onDrop={(value) => {
+                                const filereader = new FileReader();
+
+                                filereader.onload = function () {
+                                  setPreview(filereader.result);
+                                };
+
+                                filereader.readAsDataURL(value[0]);
+
+                                // filereader
+
+                                onChange(value);
+                              }}
+                            >
+                              {({ getRootProps, getInputProps }) => (
+                                <div
+                                  className="flex w-full flex-col items-center justify-center space-y-1"
+                                  {...getRootProps()}
+                                  onBlur={onBlur}
+                                >
+                                  <input {...getInputProps()} />
+
+                                  <div className="flex aspect-square w-10 items-center justify-center rounded-full bg-[#2D3136] p-0.5">
+                                    <HiOutlineCloudUpload className="text-xl text-primaryGreen" />
+                                  </div>
+                                  <p>
+                                    <span className="text-primaryGreen">
+                                      Click to upload
+                                    </span>{" "}
+                                    or drag and drop
+                                  </p>
+                                  <p>SVG, PNG, JPG or GIF (max 800x400px)</p>
+                                </div>
+                              )}
+                            </Dropzone>
+                          </div>
+                        </CustomInput>
+                      );
+                    }}
+                  />
                 </div>
+                <Button className="w-full bg-primaryGreen" type="submit">
+                  Submit and continue
+                </Button>
               </form>
             </Form>
           </div>
         </div>
       </div>
-      <div className="sticky right-0 top-0 hidden h-[720px] w-[350px] pt-16 lg:block">
+      <div className="sticky right-0 top-0 hidden h-[720px] max-h-full w-[350px] pt-16 lg:block">
         <Image
           className="h-full w-full rounded-lg object-cover"
           src={patientInfo}

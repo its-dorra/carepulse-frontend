@@ -19,7 +19,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${plusJakarta.className} flex h-screen w-dvw items-center justify-center bg-background text-white`}
+        className={`${plusJakarta.className} flex items-center justify-center overflow-y-clip bg-background text-white`}
       >
         {children}
       </body>
