@@ -5,14 +5,28 @@ import { Calendar as CalendarIcon } from "lucide-react";
 import { Calendar } from "./calendar";
 import { format } from "date-fns";
 
-export default function DateOfBirth({ form }: { form: any }) {
+type type = "default" | "single" | "multiple" | "range";
+
+export default function DateOfBirth({
+  form,
+  label,
+  placeholder,
+  type = "single",
+  name
+}: {
+  form: any;
+  label: string;
+  placeholder: string;
+  type?: type;
+  name: string
+}) {
   return (
     <FormField
       control={form.control}
-      name="dateOfBirth"
+      name={name}
       render={({ field }) => (
         <FormItem className="w-full">
-          <FormLabel className="text-[12px] text-n-1">Date of birth</FormLabel>
+          <FormLabel className="text-[12px] text-n-1">{label}</FormLabel>
           <Popover>
             <PopoverTrigger asChild>
               <FormControl>
@@ -27,9 +41,7 @@ export default function DateOfBirth({ form }: { form: any }) {
                     {field.value ? (
                       format(field.value, "PPP")
                     ) : (
-                      <span className="text-sm text-n-1/50">
-                        Select your birthdate
-                      </span>
+                      <span className="text-sm text-n-1/50">{placeholder}</span>
                     )}
                   </div>
                 </div>
@@ -37,14 +49,11 @@ export default function DateOfBirth({ form }: { form: any }) {
             </PopoverTrigger>
             <PopoverContent className="w-auto p-0" align="start">
               <Calendar
-                mode="single"
+                mode={type}
                 selected={field.value}
                 onSelect={field.onChange}
-                disabled={(date: Date) =>
-                  date > new Date() || date < new Date("1900-01-01")
-                }
+                disabled={(date: Date) => date < new Date("1930-01-01")}
                 className="border-white bg-foreground"
-                initialFocus
               />
             </PopoverContent>
           </Popover>
