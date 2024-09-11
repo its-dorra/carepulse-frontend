@@ -12,13 +12,15 @@ export default function DateOfBirth({
   label,
   placeholder,
   type = "single",
-  name
+  name,
+  disabled,
 }: {
   form: any;
   label: string;
   placeholder: string;
   type?: type;
-  name: string
+  name: string;
+  disabled?: boolean;
 }) {
   return (
     <FormField
@@ -52,7 +54,9 @@ export default function DateOfBirth({
                 mode={type}
                 selected={field.value}
                 onSelect={field.onChange}
-                disabled={(date: Date) => date < new Date("1930-01-01")}
+                disabled={(date: Date) =>
+                  !disabled ? date < new Date("1930-01-01") : date <= new Date()
+                }
                 className="border-white bg-foreground"
               />
             </PopoverContent>

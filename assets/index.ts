@@ -6,10 +6,16 @@ import logo from "./Logo.svg";
 import DashboardCardIcon1 from "./calendar-check-02.svg";
 import DashboardCardIcon2 from "./hourglass-01.svg";
 import DashboardCardIcon3 from "./alert-triangle.svg";
+import cancelledIcon from "./cancelledIcon.svg";
+import successIcon from "./successIcon.svg";
+import waitingIcon from "./waitingIcon.svg";
 import * as animationData from "./success-lottie.json";
 import { AppointmentsInterface } from "@/lib/types/AppointmentsType";
 
 export {
+  cancelledIcon,
+  successIcon,
+  waitingIcon,
   onboardingSignUpPic,
   onboardingSignInPic,
   patientInfo,
@@ -137,3 +143,21 @@ export const appointments: AppointmentsInterface[] = [
     doctorName: "Dr. David Thompson",
   },
 ];
+
+export const statusColors = {
+  Scheduled: {
+    background: "#0D2A1F",
+    color: "#24AE7C",
+    icon: successIcon,
+  },
+  Pending: {
+    background: "#152432",
+    color: "#79B5EC",
+    icon: waitingIcon,
+  },
+  Cancelled: {
+    background: "#3E1716",
+    color: "#F37877",
+    icon: cancelledIcon,
+  },
+};

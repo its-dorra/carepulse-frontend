@@ -8,6 +8,7 @@ interface CustomSelectGroupInterface {
   name: string;
   label: string;
   placeholder: string;
+  icon?: ReactNode;
   render: (item: any) => ReactNode;
 }
 
@@ -18,6 +19,7 @@ export default function CustomSelectGroup({
   label,
   placeholder,
   render,
+  icon,
 }: CustomSelectGroupInterface) {
   return (
     <FormField
@@ -29,7 +31,10 @@ export default function CustomSelectGroup({
           <Select onValueChange={field.onChange} defaultValue={field.value}>
             <FormControl>
               <SelectTrigger className="border-white/20 bg-foreground">
-                <SelectValue placeholder={placeholder} />
+                <div className="flex items-center gap-x-3">
+                  {icon}
+                  <SelectValue placeholder={placeholder} />
+                </div>
               </SelectTrigger>
             </FormControl>
             <SelectContent className="bg-foreground py-2">
