@@ -1,3 +1,4 @@
+import { Skeleton } from "@/lib/components/ui/skeleton";
 import Image from "next/image";
 
 interface DashboardCartStat {
@@ -5,6 +6,7 @@ interface DashboardCartStat {
   statistic: number;
   text: string;
   color: string;
+  isLoading: boolean;
 }
 
 export default function DashboardCardStat({
@@ -12,6 +14,7 @@ export default function DashboardCardStat({
   statistic,
   text,
   color,
+  isLoading,
 }: DashboardCartStat) {
   return (
     <div
@@ -20,7 +23,11 @@ export default function DashboardCardStat({
     >
       <div className="flex items-center gap-x-2">
         <Image src={icon} alt="icon" width={18} height={18} />
-        <p className="text-lg">{statistic}</p>
+        {!isLoading ? (
+          <p className="text-lg">{statistic}</p>
+        ) : (
+          <Skeleton className="aspect-square w-[22px] bg-white/10" />
+        )}
       </div>
       <p className="text-s">{text}</p>
     </div>

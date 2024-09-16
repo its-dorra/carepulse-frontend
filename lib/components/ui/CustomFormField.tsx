@@ -22,11 +22,11 @@ export default function CustomFormField({
       control={control}
       name={name}
       render={({ field }) => (
-        <CustomInput label={label}>
+        <CustomInput className="text-xs" label={label}>
           {textArea ? (
             <textarea
-              rows={2}
-              className="w-full border-none bg-transparent p-1 outline-none placeholder:text-[12px] placeholder:text-n-1/50 focus:border-none active:border-none"
+              rows={3}
+              className="w-full resize-none border-none bg-transparent p-1 text-xs outline-none placeholder:text-[12px] placeholder:text-n-1/50 focus:border-none active:border-none"
               placeholder={placeholder}
               {...field}
             />
@@ -34,7 +34,7 @@ export default function CustomFormField({
             <>
               {icon && icon}
               <input
-                className="w-full border-none bg-transparent outline-none placeholder:text-[12px] placeholder:text-n-1/50 focus:border-none active:border-none"
+                className="w-full border-none bg-transparent text-xs outline-none placeholder:text-[12px] placeholder:text-n-1/50 focus:border-none active:border-none"
                 placeholder={placeholder}
                 {...field}
               />

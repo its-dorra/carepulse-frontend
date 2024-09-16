@@ -1,9 +1,9 @@
-import { doctorsName } from "@/assets";
+import { doctorsIds } from "@/assets";
 import { z } from "zod";
 
 const newAppointmentSchema = z
   .object({
-    doctor: z.enum(doctorsName as [string, ...string[]]),
+    doctorId: z.enum(doctorsIds as [string]),
     reasonOfAppointment: z.string().min(1),
     additionalComments: z.string(),
     expectedDate: z.date(),

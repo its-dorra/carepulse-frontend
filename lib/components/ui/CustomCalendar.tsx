@@ -41,7 +41,9 @@ export default function DateOfBirth({
                   >
                     <CalendarIcon className="mr-2 h-4 w-4 opacity-50" />
                     {field.value ? (
-                      format(field.value, "PPP")
+                      <span className="text-xs">
+                        {format(field.value, "PPP")}
+                      </span>
                     ) : (
                       <span className="text-sm text-n-1/50">{placeholder}</span>
                     )}

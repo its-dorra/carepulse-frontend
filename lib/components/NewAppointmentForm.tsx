@@ -32,10 +32,10 @@ export default function NewAppointmentForm() {
           form={form}
           items={doctors}
           label="Doctor"
-          name="doctor"
+          name="doctorId"
           placeholder="Select a doctor"
           render={(doctor) => (
-            <SelectItem className="w-full" key={doctor.id} value={doctor.name}>
+            <SelectItem className="w-full" key={doctor.id} value={doctor.id}>
               <DoctorTile img={doctor.imgPath} name={doctor.name} />
             </SelectItem>
           )}

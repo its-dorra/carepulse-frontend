@@ -1,43 +1,43 @@
-"use client";
-
 import { PropsWithChildren } from "react";
 import {
   AlertDialog,
-  AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
-  AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "./ui/alert-dialog";
-import { Button } from "./ui/button";
-import { useForm } from "react-hook-form";
+} from "@/lib/components/ui/alert-dialog";
+import { Button } from "@/lib/components/ui/button";
+import { AppointmentsInterface } from "@/lib/types/AppointmentsType";
 
 interface DashboardActionButton extends PropsWithChildren {
   isGreen?: boolean;
+  disabled: boolean;
   btnTitle: string;
   modalTitle: string;
   btnActionTitle: string;
   className?: string;
+  isOpen: boolean;
+  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export default function DashboardActionButton({
+  disabled,
   isGreen,
   btnTitle,
-  btnActionTitle,
   modalTitle,
   className,
+  isOpen,
+  setIsOpen,
   children,
 }: DashboardActionButton) {
-  const form = useForm({});
-
   return (
-    <AlertDialog>
+    <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
       <AlertDialogTrigger asChild>
         <Button
-          className={`m-0 border-none p-0 text-xs ${isGreen ? "text-primaryGreen" : ""} outline-none`}
+          className={`m-0 border-none p-0 px-2 text-xs ${isGreen ? "text-primaryGreen" : ""} outline-none transition-colors hover:bg-white/10 disabled:cursor-not-allowed`}
+          disabled={disabled}
         >
           {btnTitle}
         </Button>
@@ -50,16 +50,10 @@ export default function DashboardActionButton({
               X
             </AlertDialogCancel>
           </AlertDialogTitle>
-          <AlertDialogDescription>{children}</AlertDialogDescription>
+          <AlertDialogDescription asChild>
+            <div className="text-left">{children}</div>
+          </AlertDialogDescription>
         </AlertDialogHeader>
-        <AlertDialogFooter>
-          <AlertDialogAction
-            type="submit"
-            className={`w-full ${isGreen ? "bg-primaryGreen" : "bg-red-500"}`}
-          >
-            {btnActionTitle}
-          </AlertDialogAction>
-        </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
   );

@@ -1,5 +1,5 @@
 import { logo, onboardingSignUpPic } from "@/assets";
-import AdminButton from "@/lib/components/ui/admin-button";
+import AdminButton from "@/lib/features/users/components/admin-button";
 import LoginForm from "@/lib/components/ui/LoginForm";
 import Image from "next/image";
 

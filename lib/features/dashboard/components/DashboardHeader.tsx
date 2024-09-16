@@ -1,10 +1,10 @@
 import { doctors, logo } from "@/assets";
 import Image from "next/image";
-import CustomAvatar from "./CustomAvatar";
+import CustomAvatar from "@/lib/components/CustomAvatar";
 
 export default function DashboardHeader() {
   return (
-    <header className="flex w-full items-center justify-between rounded-lg bg-black/35 px-6 py-3">
+    <header className="flex w-full max-w-[1180px] items-center justify-between self-center rounded-lg bg-black/35 px-6 py-3">
       <Image className="w-28" src={logo} alt="logo" />
       <div className="flex items-center gap-x-2">
         <CustomAvatar

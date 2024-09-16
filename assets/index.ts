@@ -26,46 +26,46 @@ export {
 
 export const doctors = [
   {
-    id: 1,
+    id: "1",
     name: "Dr. Sarah Safary",
     imgPath:
       "https://static.vecteezy.com/system/resources/thumbnails/028/287/555/small_2x/an-indian-young-female-doctor-isolated-on-green-ai-generated-photo.jpg",
   },
   {
-    id: 2,
+    id: "2",
     name: "Dr. Ava Williams",
     imgPath:
       "https://img.freepik.com/free-photo/woman-doctor-wearing-lab-coat-with-stethoscope-isolated_1303-29791.jpg",
   },
   {
-    id: 3,
+    id: "3",
     name: "Dr. Adam Smith",
     imgPath:
       "https://t3.ftcdn.net/jpg/02/60/04/08/360_F_260040863_fYxB1SnrzgJ9AOkcT0hoe7IEFtsPiHAD.jpg",
   },
 ];
 
-export const doctorsName = [...doctors.map((doctor) => doctor.name)] as const;
+export const doctorsIds = [...doctors.map((doctor) => doctor.id)] as const;
 
 export const dashboardCards = [
   {
     id: 1,
-    icon: DashboardCardIcon1,
-    statistic: 94,
-    text: "Total number of scheduled appointments",
-    color: "#ffd1471a",
-  },
-  {
-    id: 2,
     icon: DashboardCardIcon2,
-    statistic: 32,
+    label: "Pending",
     text: "Total number of pending appointments",
     color: "#79b5ec21",
   },
   {
+    id: 2,
+    icon: DashboardCardIcon1,
+    label: "Scheduled",
+    text: "Total number of scheduled appointments",
+    color: "#ffd1471a",
+  },
+  {
     id: 3,
     icon: DashboardCardIcon3,
-    statistic: 56,
+    label: "Cancelled",
     text: "Total number of cancelled appointments",
     color: "#f3787726",
   },

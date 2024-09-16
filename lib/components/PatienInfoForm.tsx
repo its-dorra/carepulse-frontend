@@ -26,15 +26,15 @@ import patientInfoSchema, {
   identificationType,
 } from "@/lib/schemas/patientInfoSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import Dropzone, { useDropzone } from "react-dropzone";
+import Dropzone from "react-dropzone";
 import { doctors } from "@/assets";
 import Image from "next/image";
 export default function PatientInfoForm() {
-  const [preview, setPreview] = useState<ArrayBuffer | string | null>(null);
+  const [preview, setPreview] = useState<string | null>(null);
   const form = useForm<z.infer<typeof patientInfoSchema>>({
     resolver: zodResolver(patientInfoSchema),
     defaultValues: {
-      //   gender: "Male",
+      gender: "Male",
     },
   });
 
@@ -123,15 +123,11 @@ export default function PatientInfoForm() {
           <CustomSelectGroup
             form={form}
             items={doctors}
-            name="primaryPhysician"
+            name="doctorId"
             placeholder="Select a physician"
             label="Primary care physician"
             render={(doctor) => (
-              <SelectItem
-                className="w-full"
-                key={doctor.id}
-                value={doctor.name}
-              >
+              <SelectItem className="w-full" key={doctor.id} value={doctor.id}>
                 <DoctorTile img={doctor.imgPath} name={doctor.name} />
               </SelectItem>
             )}
@@ -231,13 +227,15 @@ export default function PatientInfoForm() {
                   >
                     <Dropzone
                       onDrop={(value) => {
-                        const filereader = new FileReader();
+                        setPreview(URL.createObjectURL(value[0]));
 
-                        filereader.onload = function () {
-                          setPreview(filereader.result);
-                        };
+                        // const filereader = new FileReader();
 
-                        filereader.readAsDataURL(value[0]);
+                        // filereader.onload = function () {
+                        //   setPreview(filereader.result);
+                        // };
+
+                        // filereader.readAsDataURL(value[0]);
 
                         // filereader
 
