@@ -1,5 +1,6 @@
 import { logo, newAppointmentPic } from "@/assets";
 import NewAppointmentForm from "@/lib/components/NewAppointmentForm";
+
 import Image from "next/image";
 
 export default function NewAppointment() {

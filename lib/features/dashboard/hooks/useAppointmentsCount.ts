@@ -1,11 +1,13 @@
-import { getAppointmentsCount } from "@/lib/api/appointments";
-import { useQuery } from "@tanstack/react-query";
+
+import { appointmentCountQuery } from "@/lib/queries";
+import {  useQuery } from "@tanstack/react-query";
 
 export const useAppointmentsCount = () => {
-  const { data: { statusCount } = {}, isPending } = useQuery({
-    queryFn: getAppointmentsCount,
-    queryKey: ["statusCount"],
-  });
+  const {
+    data: { statusCount } = {},
 
-  return { statusCount, isPending };
+    ...props
+  } = useQuery(appointmentCountQuery);
+
+  return { statusCount, ...props };
 };

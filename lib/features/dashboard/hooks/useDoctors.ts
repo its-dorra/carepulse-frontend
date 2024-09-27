@@ -1,9 +1,9 @@
-import { getDoctors } from "@/lib/api/appointments";
+import { getDoctors } from "@/actions/appointmentsActions";
 import { useQuery } from "@tanstack/react-query";
 
 export const useDoctors = () => {
   return useQuery({
-    queryFn: getDoctors,
+    queryFn: () => getDoctors({}),
     queryKey: ["doctors"],
   });
 };

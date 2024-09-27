@@ -7,9 +7,12 @@ import { TableBody } from "@/lib/components/ui/table";
 import DashboardTableRow from "./DashboardTableRow";
 import { useAppointments } from "../hooks/useAppointments";
 import SkeletonTableRow from "./SkeletonTableRow";
+import { notFound } from "next/navigation";
 
 export default function DashboardTableBody() {
-  const { appointments = [], isPending } = useAppointments();
+  const { appointments, isPending, isError } = useAppointments();
+
+  if (isError) return notFound();
 
   return (
     <TableBody className="text-[11px] font-light">
@@ -21,7 +24,7 @@ export default function DashboardTableBody() {
         </>
       ) : (
         <>
-          {appointments.map((appointment) => {
+          {appointments!.map((appointment) => {
             const avatarName = appointment.fullName
               .split(" ")
               .map((char) => char.at(0))

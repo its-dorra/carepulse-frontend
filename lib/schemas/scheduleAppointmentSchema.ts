@@ -2,7 +2,7 @@ import { doctorsIds } from "@/assets";
 import { z } from "zod";
 
 const scheduleAppointmentSchema = z.object({
-  doctorId: z.number(),
+  doctorId: z.string(),
   reasonForAppointment: z.string().min(1),
   expectedDate: z.date().min(new Date()),
 });

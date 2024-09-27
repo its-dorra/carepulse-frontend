@@ -34,3 +34,16 @@ export const formatDate = (dateString: string) => {
     year: "numeric",
   });
 };
+
+export function formatDataAsObject(
+  data: {
+    status: "Cancelled" | "Scheduled" | "Pending";
+    count: number;
+  }[],
+) {
+  const formattedData: any = {};
+  for (const statusCount of data) {
+    formattedData[statusCount.status] = statusCount.count;
+  }
+  return formattedData;
+}

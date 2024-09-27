@@ -1,47 +1,128 @@
 "use client";
-
-import DoctorTile from "@/lib/components/DoctorTile";
+import { useState } from "react";
 
 import CustomFormField from "@/lib/components/ui/CustomFormField";
 import CustomInput from "@/lib/components/ui/CustomInput";
-
 import CustomRadioGroup from "@/lib/components/ui/CustomRadioGroup";
 import CustomSelectGroup from "@/lib/components/ui/CustomSelectGroup";
 import CustomCalendar from "@/lib/components/ui/CustomCalendar";
 import { Form, FormField } from "@/lib/components/ui/form";
 
-import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import {
-  HiOutlineCloudUpload,
-  HiOutlinePhone,
-  HiOutlineUser,
-} from "react-icons/hi";
+import { HiOutlineCloudUpload, HiOutlineUser } from "react-icons/hi";
 import { z } from "zod";
 import { Button } from "@/lib/components/ui/button";
 
 import { SelectItem } from "@/lib/components/ui/select";
 
 import patientInfoSchema, {
-  identificationType,
+  identificationType as identificationTypes,
 } from "@/lib/schemas/patientInfoSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Dropzone from "react-dropzone";
-import { doctors } from "@/assets";
+
 import Image from "next/image";
+import CustomPhoneInput from "../features/users/components/custom-phone-input";
+import { usePersonalInfo } from "../features/users/hooks/usePersonalInfo";
+import { useRouter } from "next/navigation";
+import { useUser } from "../features/users/hooks/useUser";
+import DoctorSelectGroup from "./DoctorSelectGroup";
+
 export default function PatientInfoForm() {
   const [preview, setPreview] = useState<string | null>(null);
+
+  const { data: user } = useUser();
+
   const form = useForm<z.infer<typeof patientInfoSchema>>({
     resolver: zodResolver(patientInfoSchema),
     defaultValues: {
       gender: "Male",
+      address: "",
+      phoneNumber: user?.user?.phoneNumber,
+      pastMedHistory: "",
+      occupation: "",
+      insuranceProvider: "",
+      allergies: "",
+      insuranceNumber: "",
+      identificationType: "",
+      identificationNumber: "",
+      currentMedications: "",
+      dateOfBirth: new Date(),
+      fullName: user?.user?.fullName,
+      doctorId: "",
+      email: user?.user?.email,
+      emergencyName: "",
+      emergencyPhoneNumber: "",
+      familyMedHistory: "",
     },
   });
 
-  const onSubmit: SubmitHandler<z.infer<typeof patientInfoSchema>> = function (
-    values,
-  ) {
-    console.log(values);
+  const {
+    formState: {
+      errors: {
+        address,
+        allergies,
+        currentMedications,
+        phoneNumber,
+        pastMedHistory,
+        occupation,
+        insuranceProvider,
+        insuranceNumber,
+        identificationNumber,
+        fullName,
+        familyMedHistory,
+        emergencyPhoneNumber,
+        emergencyName,
+        email,
+      },
+    },
+  } = form;
+
+  const { mutate, isPending } = usePersonalInfo();
+
+  const router = useRouter();
+
+  const onSubmit: SubmitHandler<z.infer<typeof patientInfoSchema>> = function ({
+    dateOfBirth,
+    gender,
+    address,
+    occupation,
+    emergencyName,
+    emergencyPhoneNumber,
+    doctorId,
+    insuranceProvider,
+    insuranceNumber,
+    allergies,
+    currentMedications,
+    familyMedHistory,
+    pastMedHistory,
+    identificationType,
+    identificationNumber,
+  }) {
+    mutate(
+      {
+        dateOfBirth,
+        gender,
+        address,
+        occupation,
+        emergencyName,
+        emergencyPhoneNumber,
+        doctorId,
+        insuranceProvider,
+        insuranceNumber,
+        allergies,
+        currentMedications,
+        familyMedHistory,
+        pastMedHistory,
+        identificationType,
+        identificationNumber,
+      },
+      {
+        onSuccess: () => {
+          router.replace("/new-appointment");
+        },
+      },
+    );
   };
 
   return (
@@ -50,6 +131,7 @@ export default function PatientInfoForm() {
         <div className="space-y-4">
           <p className="text-3xl">Personal Information</p>
           <CustomFormField
+            error={fullName?.message}
             control={form.control}
             name="fullName"
             label="Full name"
@@ -58,6 +140,7 @@ export default function PatientInfoForm() {
 
           <div className="flex flex-col items-center gap-x-6 gap-y-4 sm:flex-row">
             <CustomFormField
+              error={email?.message}
               control={form.control}
               name="email"
               label="Email"
@@ -65,12 +148,12 @@ export default function PatientInfoForm() {
               icon={<HiOutlineUser />}
             />
 
-            <CustomFormField
+            <CustomPhoneInput
+              error={phoneNumber?.message}
               control={form.control}
               name="phoneNumber"
               label="Phone number"
-              placeholder="00 213 778 76 93 81"
-              icon={<HiOutlinePhone />}
+              placeholder="+213 778 76 93 81"
             />
           </div>
           <div className="flex h-full flex-col items-center gap-x-6 gap-y-4 sm:flex-row">
@@ -89,6 +172,7 @@ export default function PatientInfoForm() {
           </div>
           <div className="flex h-full flex-col items-center gap-x-6 gap-y-4 sm:flex-row">
             <CustomFormField
+              error={address?.message}
               control={form.control}
               name="address"
               label="Address"
@@ -96,6 +180,7 @@ export default function PatientInfoForm() {
             />
 
             <CustomFormField
+              error={occupation?.message}
               control={form.control}
               name="occupation"
               label="Occupation"
@@ -104,42 +189,35 @@ export default function PatientInfoForm() {
           </div>
           <div className="flex h-full flex-col items-center gap-x-6 gap-y-4 sm:flex-row">
             <CustomFormField
+              error={emergencyName?.message}
               control={form.control}
               name="emergencyName"
               label="Emergency contact"
               placeholder="Guadrian's name"
             />
-            <CustomFormField
+            <CustomPhoneInput
+              error={emergencyPhoneNumber?.message}
               control={form.control}
               name="emergencyPhoneNumber"
               label="Phone Number"
               placeholder="ex: +1(868)579-9831"
-              icon={<HiOutlinePhone />}
             />
           </div>
         </div>
         <div className="space-y-4">
           <p className="text-3xl">Medical Information</p>
-          <CustomSelectGroup
-            form={form}
-            items={doctors}
-            name="doctorId"
-            placeholder="Select a physician"
-            label="Primary care physician"
-            render={(doctor) => (
-              <SelectItem className="w-full" key={doctor.id} value={doctor.id}>
-                <DoctorTile img={doctor.imgPath} name={doctor.name} />
-              </SelectItem>
-            )}
-          />
+          <DoctorSelectGroup control={form.control} />
+
           <div className="flex h-full flex-col items-center gap-x-6 gap-y-4 sm:flex-row">
             <CustomFormField
+              error={insuranceProvider?.message}
               control={form.control}
               name="insuranceProvider"
               label="Insurance provider"
               placeholder="ex: BlueCross"
             />
             <CustomFormField
+              error={insuranceNumber?.message}
               control={form.control}
               name="insuranceNumber"
               label="Insurance policy number"
@@ -148,6 +226,7 @@ export default function PatientInfoForm() {
           </div>
           <div className="flex h-full flex-col items-center gap-x-6 gap-y-4 sm:flex-row">
             <CustomFormField
+              error={allergies?.message}
               control={form.control}
               name="allergies"
               label="Allergies (if any)"
@@ -155,6 +234,7 @@ export default function PatientInfoForm() {
               textArea
             />
             <CustomFormField
+              error={currentMedications?.message}
               control={form.control}
               name="currentMedications"
               label="Current medications"
@@ -164,6 +244,7 @@ export default function PatientInfoForm() {
           </div>
           <div className="flex h-full flex-col items-center gap-x-6 gap-y-4 sm:flex-row">
             <CustomFormField
+              error={familyMedHistory?.message}
               control={form.control}
               name="familyMedHistory"
               label="Family medical history (if relevant"
@@ -171,6 +252,7 @@ export default function PatientInfoForm() {
               textArea
             />
             <CustomFormField
+              error={pastMedHistory?.message}
               control={form.control}
               name="pastMedHistory"
               label="Past medical history"
@@ -182,11 +264,12 @@ export default function PatientInfoForm() {
         <div className="space-y-4">
           <p className="text-3xl">Identification and Verification</p>
           <CustomSelectGroup
-            form={form}
+            disabled={false}
+            control={form.control}
             label="Identification type"
             name="identificationType"
             placeholder="ID type"
-            items={identificationType}
+            items={identificationTypes}
             render={(id) => {
               return (
                 <SelectItem className="w-full" key={id} value={id}>
@@ -197,6 +280,7 @@ export default function PatientInfoForm() {
           />
 
           <CustomFormField
+            error={identificationNumber?.message}
             control={form.control}
             name="identificationNumber"
             label="Identification number"
@@ -211,34 +295,12 @@ export default function PatientInfoForm() {
                   className="flex w-full items-center justify-center border-dashed bg-foreground"
                   label="Scanned Copy of Identification Document"
                 >
-                  {preview && (
-                    <Image
-                      className={`${preview ? "block" : "hidden"} w-full object-contain`}
-                      src={preview}
-                      //   fill
-                      height={320}
-                      width={720}
-                      alt="Selected image"
-                    />
-                  )}
-
                   <div
                     className={`${preview ? "hidden" : "block"} flex w-full items-center justify-center`}
                   >
                     <Dropzone
                       onDrop={(value) => {
                         setPreview(URL.createObjectURL(value[0]));
-
-                        // const filereader = new FileReader();
-
-                        // filereader.onload = function () {
-                        //   setPreview(filereader.result);
-                        // };
-
-                        // filereader.readAsDataURL(value[0]);
-
-                        // filereader
-
                         onChange(value);
                       }}
                     >
@@ -248,18 +310,30 @@ export default function PatientInfoForm() {
                           {...getRootProps()}
                           onBlur={onBlur}
                         >
-                          <input {...getInputProps()} />
+                          <input {...getInputProps()} type="image/*" />
 
-                          <div className="flex aspect-square w-10 items-center justify-center rounded-full bg-[#2D3136] p-0.5">
-                            <HiOutlineCloudUpload className="text-xl text-primaryGreen" />
-                          </div>
-                          <p>
-                            <span className="text-primaryGreen">
-                              Click to upload
-                            </span>{" "}
-                            or drag and drop
-                          </p>
-                          <p>SVG, PNG, JPG or GIF (max 800x400px)</p>
+                          {preview !== null ? (
+                            <Image
+                              className={`${preview ? "block" : "hidden"} max-h-full w-full object-contain`}
+                              src={preview}
+                              height={320}
+                              width={720}
+                              alt="Selected image"
+                            />
+                          ) : (
+                            <>
+                              <div className="flex aspect-square w-10 items-center justify-center rounded-full bg-[#2D3136] p-0.5">
+                                <HiOutlineCloudUpload className="text-xl text-primaryGreen" />
+                              </div>
+                              <p>
+                                <span className="text-primaryGreen">
+                                  Click to upload
+                                </span>{" "}
+                                or drag and drop
+                              </p>
+                              <p>SVG, PNG, JPG or GIF (max 800x400px)</p>
+                            </>
+                          )}
                         </div>
                       )}
                     </Dropzone>
@@ -269,7 +343,11 @@ export default function PatientInfoForm() {
             }}
           />
         </div>
-        <Button className="w-full bg-primaryGreen" type="submit">
+        <Button
+          disabled={isPending}
+          className="w-full bg-primaryGreen"
+          type="submit"
+        >
           Submit and continue
         </Button>
       </form>

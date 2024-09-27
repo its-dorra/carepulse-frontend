@@ -1,9 +1,10 @@
 import { ReactNode } from "react";
 import { FormControl, FormField, FormItem, FormLabel } from "./form";
 import { Select, SelectContent, SelectTrigger, SelectValue } from "./select";
+import { Control, FieldValues } from "react-hook-form";
 
 interface CustomSelectGroupInterface<T> {
-  form: any;
+  control: Control<any, any>;
   items: T[];
   name: string;
   label: string;
@@ -14,7 +15,7 @@ interface CustomSelectGroupInterface<T> {
 }
 
 export default function CustomSelectGroup<T>({
-  form,
+  control,
   items,
   name,
   label,
@@ -25,7 +26,7 @@ export default function CustomSelectGroup<T>({
 }: CustomSelectGroupInterface<T>) {
   return (
     <FormField
-      control={form.control}
+      control={control}
       name={name}
       render={({ field }) => (
         <FormItem>

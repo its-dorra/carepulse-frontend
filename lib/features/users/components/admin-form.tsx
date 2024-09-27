@@ -12,29 +12,22 @@ import adminFormSchema, {
   AdminForm as AdminFormType,
 } from "@/lib/schemas/adminFormSchema";
 import { Button } from "../../../components/ui/button";
-import { useAdmin } from "../hooks/useAdmin";
+import { useLoginAdmin } from "../hooks/useLoginAdmin";
+import { useRouter } from "next/navigation";
 
-export default function AdminForm({
-  length,
-  closeModal,
-}: {
-  length: number;
-  closeModal: () => void;
-}) {
+export default function AdminForm({ length }: { length: number }) {
   const form = useForm<AdminFormType>({
     resolver: zodResolver(adminFormSchema),
   });
 
-  const { mutate, isPending } = useAdmin();
+  const router = useRouter();
+
+  const { mutate, isPending } = useLoginAdmin();
 
   const onSubmit: SubmitHandler<AdminFormType> = ({ pinCode }) => {
     mutate(pinCode, {
       onSuccess: (res) => {
-        console.log(res);
-        closeModal();
-      },
-      onError: (err) => {
-        console.log(err);
+        router.replace("/dashboard");
       },
     });
   };
@@ -58,7 +51,9 @@ export default function AdminForm({
             </InputOTP>
           )}
         />
-        <Button className="w-full bg-primaryGreen">Enter Admin Passkey</Button>
+        <Button disabled={isPending} className="w-full bg-primaryGreen">
+          Enter Admin Passkey
+        </Button>
       </form>
     </Form>
   );

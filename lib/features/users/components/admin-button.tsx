@@ -10,25 +10,18 @@ import {
   AlertDialogCancel,
 } from "@/lib/components/ui/alert-dialog";
 
-import { AlertDialogAction } from "@radix-ui/react-alert-dialog";
+import { AlertDialogDescription } from "@radix-ui/react-alert-dialog";
 import AdminForm from "./admin-form";
-import { useState } from "react";
 
 export default function AdminButton() {
-  const [isOpen, setIsOpen] = useState(false);
-
-  const closeModal = () => {
-    setIsOpen(false);
-  };
-
   return (
-    <AlertDialog onOpenChange={(isOpen) => setIsOpen(isOpen)} open={isOpen}>
+    <AlertDialog>
       <AlertDialogTrigger className="text-primaryGreen">
         Admin
       </AlertDialogTrigger>
       <AlertDialogContent className="w-fit space-y-4 border-none px-8 py-6">
         <AlertDialogHeader>
-          <AlertDialogTitle className="mb-4">
+          <AlertDialogTitle>
             <div className="flex items-center justify-between">
               <p>Admin Access Verification</p>
               <AlertDialogCancel className="p-0.25 border-none">
@@ -39,7 +32,11 @@ export default function AdminButton() {
               To access the admin page, please enter the passkey
             </p>
           </AlertDialogTitle>
-          <AdminForm closeModal={closeModal} length={6} />
+          <AlertDialogDescription asChild>
+            <div>
+              <AdminForm length={6} />
+            </div>
+          </AlertDialogDescription>
         </AlertDialogHeader>
       </AlertDialogContent>
     </AlertDialog>

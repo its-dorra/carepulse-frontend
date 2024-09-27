@@ -13,33 +13,40 @@ import { SelectItem } from "./ui/select";
 import CustomFormField from "./ui/CustomFormField";
 import CustomCalendar from "./ui/CustomCalendar";
 import { Button } from "./ui/button";
+import DoctorSelectGroup from "./DoctorSelectGroup";
+import { useNewAppointment } from "../features/dashboard/hooks/useNewAppointment";
+import { useRouter } from "next/navigation";
 
 export default function NewAppointmentForm() {
   const form = useForm<newAppointmentType>({
     resolver: zodResolver(newAppointmentSchema),
+    defaultValues: {
+      additionalComments: "",
+      doctorId: "",
+      expectedDate: new Date(),
+      reasonOfAppointment: "",
+    },
   });
+
+  const router = useRouter();
+
+  const { mutate, isPending } = useNewAppointment();
 
   const { handleSubmit, control } = form;
 
   const onSubmit: SubmitHandler<newAppointmentType> = (values) => {
-    console.log(values);
+    mutate(values, {
+      onSuccess: (res) => {
+        const appointmentId = res.newAppointment.id;
+        router.replace(`/new-appointment/${appointmentId}/success`);
+      },
+    });
   };
 
   return (
     <Form {...form}>
       <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
-        <CustomSelectGroup
-          form={form}
-          items={doctors}
-          label="Doctor"
-          name="doctorId"
-          placeholder="Select a doctor"
-          render={(doctor) => (
-            <SelectItem className="w-full" key={doctor.id} value={doctor.id}>
-              <DoctorTile img={doctor.imgPath} name={doctor.name} />
-            </SelectItem>
-          )}
-        />
+        <DoctorSelectGroup control={form.control} />
         <div className="flex flex-col items-center gap-x-6 gap-y-4 sm:flex-row">
           <CustomFormField
             control={control}
@@ -48,6 +55,7 @@ export default function NewAppointmentForm() {
             label="Reason for appointment"
             textArea
           />
+
           <CustomFormField
             control={control}
             name="additionalComments"
@@ -56,13 +64,17 @@ export default function NewAppointmentForm() {
             textArea
           />
         </div>
+
         <CustomCalendar
           label="Expected appointment date"
           name="expectedDate"
           form={form}
           placeholder="Select your appointment date"
+          disabled
         />
-        <Button className="w-full bg-primaryGreen">Submit and continue</Button>
+        <Button disabled={isPending} className="w-full bg-primaryGreen">
+          Submit and continue
+        </Button>
       </form>
     </Form>
   );

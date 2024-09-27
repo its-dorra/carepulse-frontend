@@ -1,20 +1,23 @@
 "use client";
 
 import { Button } from "@/lib/components/ui/button";
-import { PER_PAGE } from "@/lib/constants";
+import { PER_PAGE } from "@/constants";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useCallback } from "react";
 import { HiChevronLeft, HiChevronRight } from "react-icons/hi";
+import { useAppointmentsCount } from "../hooks/useAppointmentsCount";
 
-export default function DashboardPagination({
-  totalCount,
-}: {
-  totalCount: number;
-}) {
+export default function DashboardPagination() {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const currentPage = Number(useSearchParams().get("page")) || 1;
+  const { statusCount } = useAppointmentsCount();
+
+  const totalCount = (statusCount ?? []).reduce(
+    (cur, res) => res.count + cur,
+    0,
+  );
 
   const createQueryString = useCallback(
     (name: string, value: string) => {

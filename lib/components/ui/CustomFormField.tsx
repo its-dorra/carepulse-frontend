@@ -9,6 +9,7 @@ export default function CustomFormField({
   icon,
   name,
   textArea,
+  error,
 }: {
   control: any;
   label: string;
@@ -16,13 +17,14 @@ export default function CustomFormField({
   placeholder: string;
   icon?: ReactNode;
   textArea?: boolean;
+  error?: string;
 }) {
   return (
     <FormField
       control={control}
       name={name}
       render={({ field }) => (
-        <CustomInput className="text-xs" label={label}>
+        <CustomInput className="text-xs" label={label} error={error}>
           {textArea ? (
             <textarea
               rows={3}

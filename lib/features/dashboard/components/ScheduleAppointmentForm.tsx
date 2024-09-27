@@ -8,17 +8,14 @@ import ScheduleAppointmentSchema, {
 } from "@/lib/schemas/scheduleAppointmentSchema";
 import { AppointmentsInterface, Doctor } from "@/lib/types/AppointmentsType";
 
-import { RiSearchLine } from "react-icons/ri";
 import { Form } from "@/lib/components/ui/form";
-import CustomSelectGroup from "@/lib/components/ui/CustomSelectGroup";
-import { doctors } from "@/assets";
-import { SelectItem } from "@/lib/components/ui/select";
-import DoctorTile from "@/lib/components/DoctorTile";
+
 import CustomCalendar from "@/lib/components/ui/CustomCalendar";
 import CustomFormField from "@/lib/components/ui/CustomFormField";
 import { Button } from "@/lib/components/ui/button";
 import { useDoctors } from "../hooks/useDoctors";
 import { useScheduleAppointment } from "../hooks/useScheduleAppointment";
+import DoctorSelectGroup from "@/lib/components/DoctorSelectGroup";
 
 export default function ScheduleAppointmentForm({
   setIsOpen,
@@ -30,7 +27,7 @@ export default function ScheduleAppointmentForm({
   const form = useForm<ScheduleAppointment>({
     resolver: zodResolver(ScheduleAppointmentSchema),
     defaultValues: {
-      doctorId: appointment.doctor.id,
+      doctorId: appointment.doctor.id.toString(),
       reasonForAppointment: appointment.reasonOfAppointment,
       expectedDate: new Date(appointment.expectedDate),
     },
@@ -38,15 +35,7 @@ export default function ScheduleAppointmentForm({
 
   const { mutate, isPending: isLoading } = useScheduleAppointment();
 
-  const { data, isPending } = useDoctors();
-
-  const {
-    handleSubmit,
-    control,
-    formState: { errors },
-  } = form;
-
-  console.log(errors);
+  const { handleSubmit, control } = form;
 
   const onSubmit: SubmitHandler<ScheduleAppointment> = ({
     doctorId,
@@ -71,20 +60,7 @@ export default function ScheduleAppointmentForm({
   return (
     <Form {...form}>
       <form className="mt-8 space-y-6" onSubmit={handleSubmit(onSubmit)}>
-        <CustomSelectGroup<Doctor>
-          disabled={isPending}
-          icon={<RiSearchLine className="text-lg" />}
-          form={form}
-          placeholder="Select a doctor"
-          label="Doctor"
-          name="doctorId"
-          items={data?.doctors || []}
-          render={(doctor) => (
-            <SelectItem className="w-full" key={doctor.id} value={doctor.id}>
-              <DoctorTile img={doctor.doctorPath} name={doctor.doctorName} />
-            </SelectItem>
-          )}
-        />
+        <DoctorSelectGroup control={form.control} />
         <CustomFormField
           textArea
           label="Reason for appointment"

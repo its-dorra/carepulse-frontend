@@ -3,13 +3,19 @@
 import { dashboardCards } from "@/assets";
 import DashboardCardStat from "./DashboardCardStat";
 import { useAppointmentsCount } from "../hooks/useAppointmentsCount";
+import { notFound } from "next/navigation";
+import { formatDataAsObject } from "@/lib/utils/index";
 
 export default function DashboardCards() {
-  const { statusCount, isPending } = useAppointmentsCount();
+  const { statusCount, isPending, isError } = useAppointmentsCount();
 
-  let groupedStatus: any;
-  if (statusCount) {
-    groupedStatus = Object.groupBy(statusCount, (item) => item.status);
+  if (isError) {
+    return notFound();
+  }
+
+  let groupedStatus: any = [];
+  if (statusCount && statusCount.length > 0) {
+    groupedStatus = formatDataAsObject(statusCount);
   }
 
   return (
@@ -19,7 +25,11 @@ export default function DashboardCards() {
           isLoading={isPending}
           key={card.id}
           text={card.text}
-          statistic={!groupedStatus ? 0 : groupedStatus[card.label][0].count}
+          statistic={
+            Object.keys(groupedStatus).length === 0
+              ? 0
+              : groupedStatus[card.label]
+          }
           icon={card.icon}
           color={card.color}
         />

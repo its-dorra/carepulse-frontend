@@ -1,10 +1,37 @@
-import { appointments, dashboardCards } from "@/assets";
+import { getUser } from "@/lib/features/users/utils";
 import DashboardCards from "@/lib/features/dashboard/components/DashboardCards";
-import DashboardCardStat from "@/lib/features/dashboard/components/DashboardCardStat";
+
 import DashboardHeader from "@/lib/features/dashboard/components/DashboardHeader";
 import DashboardTable from "@/lib/features/dashboard/components/DashboardTable";
 
-export default function Dashboard() {
+import { redirect } from "next/navigation";
+import {
+  dehydrate,
+  HydrationBoundary,
+  QueryClient,
+} from "@tanstack/react-query";
+import { appointmentCountQuery, appointmentQueryOptions } from "@/lib/queries";
+
+export default async function Dashboard({
+  searchParams,
+}: {
+  searchParams: any;
+}) {
+  const { user } = await getUser();
+
+  if (!user || user.role === "user") return redirect("/");
+
+  if (user.status === "registered") return redirect("/new-appointment");
+
+  const page = Number(searchParams?.page) || 1;
+
+  const queryClient = new QueryClient();
+
+  await Promise.all([
+    queryClient.prefetchQuery(appointmentQueryOptions(page)),
+    queryClient.prefetchQuery(appointmentCountQuery),
+  ]);
+
   return (
     <main className="flex h-dvh w-dvw items-center justify-center">
       <div className="flex h-full w-full flex-col space-y-8 p-4">
@@ -16,8 +43,10 @@ export default function Dashboard() {
               Start day with managing new appointments
             </p>
           </div>
-          <DashboardCards />
-          <DashboardTable />
+          <HydrationBoundary state={dehydrate(queryClient)}>
+            <DashboardCards />
+            <DashboardTable />
+          </HydrationBoundary>
         </div>
       </div>
     </main>

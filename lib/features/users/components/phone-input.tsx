@@ -23,7 +23,7 @@ import {
 } from "@/lib/components/ui/popover";
 
 import { cn } from "@/lib/utils";
-import { ScrollArea } from "./scroll-area";
+import { ScrollArea } from "@/lib/components/ui/scroll-area";
 
 type PhoneInputProps = Omit<
   React.InputHTMLAttributes<HTMLInputElement>,
@@ -64,7 +64,7 @@ const InputComponent = React.forwardRef<HTMLInputElement, InputProps>(
   ({ className, ...props }, ref) => (
     <Input
       className={cn(
-        "rounded-e-lg rounded-s-none bg-foreground outline-none focus:outline-none focus-visible:ring-0 active:border-none",
+        "rounded-e-lg rounded-s-none border-n-1 bg-foreground outline-none focus:outline-none focus-visible:ring-0 active:border-none",
         className,
       )}
       {...props}
@@ -102,7 +102,9 @@ const CountrySelect = ({
         <Button
           type="button"
           variant={"outline"}
-          className={cn("flex gap-1 rounded-e-none rounded-s-lg px-3")}
+          className={cn(
+            "flex gap-1 rounded-e-none rounded-s-lg border-n-1 px-3",
+          )}
           disabled={disabled}
         >
           <FlagComponent country={value} countryName={value} />
@@ -114,7 +116,7 @@ const CountrySelect = ({
           />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-[300px] bg-black p-0">
+      <PopoverContent className="w-[300px] bg-background p-0">
         <Command>
           <CommandList>
             <ScrollArea className="h-72 text-white">

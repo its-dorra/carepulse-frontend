@@ -52,7 +52,13 @@ export default function DashboardTableRow({
           style={{ backgroundColor: background, color }}
           className="flex w-fit items-center gap-x-1 rounded-full px-2 py-1"
         >
-          <Image src={icon} className="h-3 w-3" alt="icon" />
+          <Image
+            src={icon}
+            className="h-3 w-3"
+            width={12}
+            height={12}
+            alt="icon"
+          />
           <p>{appointment.status}</p>
         </div>
       </TableCell>

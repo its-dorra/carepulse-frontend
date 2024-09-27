@@ -7,7 +7,7 @@ import {
   useLayoutEffect,
   useState,
 } from "react";
-import { privateAxios } from "../axiosInstances";
+import { privateAxios } from "../kyInstances";
 import { AxiosError } from "axios";
 
 export interface AuthContextInterface {

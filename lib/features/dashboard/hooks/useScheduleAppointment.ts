@@ -1,4 +1,4 @@
-import { scheduleAppointment } from "@/lib/api/appointments";
+import { scheduleAppointment } from "@/actions/appointmentsActions";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export const useScheduleAppointment = () => {

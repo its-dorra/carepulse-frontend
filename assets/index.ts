@@ -9,7 +9,7 @@ import DashboardCardIcon3 from "./alert-triangle.svg";
 import cancelledIcon from "./cancelledIcon.svg";
 import successIcon from "./successIcon.svg";
 import waitingIcon from "./waitingIcon.svg";
-import * as animationData from "./success-lottie.json";
+import animationSuccess from "./success.gif";
 import { AppointmentsInterface } from "@/lib/types/AppointmentsType";
 
 export {
@@ -21,7 +21,7 @@ export {
   patientInfo,
   logo,
   newAppointmentPic,
-  animationData,
+  animationSuccess,
 };
 
 export const doctors = [

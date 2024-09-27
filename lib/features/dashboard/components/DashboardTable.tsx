@@ -30,7 +30,7 @@ export default function DashboardTable() {
         <DashboardTableBody />
       </Table>
       <div className="mt-5 grid w-full grid-flow-col justify-between">
-        <DashboardPagination totalCount={15} />
+        <DashboardPagination />
       </div>
     </>
   );
