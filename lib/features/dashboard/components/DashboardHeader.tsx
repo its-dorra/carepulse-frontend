@@ -1,4 +1,4 @@
-import { doctors, logo } from "@/assets";
+import { logo } from "@/assets";
 import Image from "next/image";
 import CustomAvatar from "@/lib/components/CustomAvatar";
 import { getUser } from "@/actions/userActions";

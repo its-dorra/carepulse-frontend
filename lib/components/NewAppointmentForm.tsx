@@ -7,7 +7,6 @@ import newAppointmentSchema, {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form } from "./ui/form";
 import CustomSelectGroup from "./ui/CustomSelectGroup";
-import { doctors } from "@/assets";
 import DoctorTile from "./DoctorTile";
 import { SelectItem } from "./ui/select";
 import CustomFormField from "./ui/CustomFormField";
@@ -22,7 +21,7 @@ export default function NewAppointmentForm() {
     resolver: zodResolver(newAppointmentSchema),
     defaultValues: {
       additionalComments: "",
-      doctorId: "",
+
       expectedDate: new Date(),
       reasonOfAppointment: "",
     },

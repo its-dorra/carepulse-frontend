@@ -49,7 +49,6 @@ export default function PatientInfoForm() {
       currentMedications: "",
       dateOfBirth: new Date(),
       fullName: user?.user?.fullName,
-      doctorId: "",
       email: user?.user?.email,
       emergencyName: "",
       emergencyPhoneNumber: "",

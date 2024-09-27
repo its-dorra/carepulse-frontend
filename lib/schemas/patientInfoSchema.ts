@@ -1,4 +1,3 @@
-import { doctorsIds } from "@/assets";
 import { z } from "zod";
 
 export const identificationType: [string, ...string[]] = [

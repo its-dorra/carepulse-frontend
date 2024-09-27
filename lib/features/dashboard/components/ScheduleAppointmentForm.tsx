@@ -47,7 +47,7 @@ export default function ScheduleAppointmentForm({
         expectedDate,
         reasonOfAppointment: reasonForAppointment,
         doctorId,
-        id: `${appointment.id}`,
+        id: appointment.id,
       },
       {
         onSuccess: () => {
