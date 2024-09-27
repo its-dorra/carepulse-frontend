@@ -3,7 +3,7 @@ import { cookies } from "next/headers";
 import { setCookies } from "./utils/cookies";
 
 const privateAxios = axios.create({
-  baseURL: "http://localhost:8000",
+  baseURL: process.env.BACKEND_URL,
   withCredentials: true,
 });
 
@@ -13,12 +13,12 @@ privateAxios.interceptors.request.use((config) => {
   return config;
 });
 
-// privateAxios.interceptors.response.use((response) => {
-//   const cookies = response.headers["set-cookie"] ?? [];
+privateAxios.interceptors.response.use((response) => {
+  const cookies = response.headers["set-cookie"] ?? [];
 
-//   setCookies(cookies);
+  setCookies(cookies);
 
-//   return response;
-// });
+  return response;
+});
 
 export default privateAxios;
