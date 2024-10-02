@@ -11,6 +11,12 @@ import {
   QueryClient,
 } from "@tanstack/react-query";
 import { appointmentCountQuery, appointmentQueryOptions } from "@/lib/queries";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Dashboard",
+  description: "Dashboard page of CarePulse",
+};
 
 export default async function Dashboard({
   searchParams,

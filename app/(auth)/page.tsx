@@ -1,7 +1,13 @@
 import { logo } from "@/assets";
 import AdminButton from "@/lib/features/users/components/admin-button";
 import LoginForm from "@/lib/features/users/components/LoginForm";
+import { Metadata } from "next";
 import Image from "next/image";
+
+export const metadata: Metadata = {
+  title: "Login to Carepulse",
+  description: "Login page of CarePulse",
+};
 
 export default function Login() {
   return (

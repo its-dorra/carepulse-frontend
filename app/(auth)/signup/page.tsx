@@ -1,6 +1,12 @@
 import { logo } from "@/assets";
 import SignUpForm from "@/lib/features/users/components/SignUpForm";
+import { Metadata } from "next";
 import Image from "next/image";
+
+export const metadata: Metadata = {
+  title: "Signup to Carepulse",
+  description: "Signup page of CarePulse",
+};
 
 export default function SignUp() {
   return (
