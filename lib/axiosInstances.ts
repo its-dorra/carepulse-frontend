@@ -2,6 +2,8 @@ import axios from "axios";
 import { cookies } from "next/headers";
 import { setCookies } from "./utils/cookies";
 
+console.log(process.env.BACKEND_URL);
+
 const privateAxios = axios.create({
   baseURL: process.env.BACKEND_URL,
   withCredentials: true,

@@ -35,13 +35,18 @@ export default function ScheduleAppointmentForm({
 
   const { mutate, isPending: isLoading } = useScheduleAppointment();
 
-  const { handleSubmit, control } = form;
+  const {
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = form;
 
   const onSubmit: SubmitHandler<ScheduleAppointment> = ({
     doctorId,
     expectedDate,
     reasonForAppointment,
   }) => {
+    console.log("smthn");
     mutate(
       {
         expectedDate,
