@@ -54,38 +54,36 @@ const LoginForm: FC = () => {
     );
   };
   return (
-    <>
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-          <CustomFormField
-            error={email?.message}
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <CustomFormField
+          error={email?.message}
+          control={form.control}
+          name="email"
+          label="Email Address"
+          icon={<HiOutlineMail className="text-xl" />}
+          placeholder="dorra@codes.io"
+        />
+
+        <div className="space-y-2">
+          <CustomPhoneInput
+            error={phoneNumber?.message}
             control={form.control}
-            name="email"
-            label="Email Address"
-            icon={<HiOutlineMail />}
-            placeholder="dorra@codes.io"
+            name="phoneNumber"
+            placeholder="+213 778 76 91 81"
+            label="Phone Number"
           />
+        </div>
 
-          <div className="space-y-2">
-            <CustomPhoneInput
-              error={phoneNumber?.message}
-              control={form.control}
-              name="phoneNumber"
-              placeholder="+213 778 76 91 81"
-              label="Phone Number"
-            />
-          </div>
-
-          <Button
-            disabled={isPending}
-            className="w-full bg-primaryGreen"
-            type="submit"
-          >
-            Login
-          </Button>
-        </form>
-      </Form>
-    </>
+        <Button
+          disabled={isPending}
+          className="w-full bg-primaryGreen"
+          type="submit"
+        >
+          Login
+        </Button>
+      </form>
+    </Form>
   );
 };
 

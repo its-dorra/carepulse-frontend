@@ -19,6 +19,7 @@ import CustomInput from "../../../components/ui/CustomInput";
 import { HiOutlineMail, HiOutlinePhone, HiOutlineUser } from "react-icons/hi";
 import { PhoneInput } from "./phone-input";
 import CustomPhoneInput from "./custom-phone-input";
+import CustomFormField from "@/lib/components/ui/CustomFormField";
 
 const SignUpForm: FC = () => {
   const form = useForm<z.infer<typeof SignUpFormSchema>>({
@@ -40,36 +41,22 @@ const SignUpForm: FC = () => {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        <FormField
+        <CustomFormField
           control={form.control}
           name="fullName"
-          render={({ field }) => (
-            <CustomInput label="Full name" error={fullName?.message}>
-              <div>
-                <HiOutlineUser />
-                <input
-                  className="w-full border-none bg-transparent outline-none placeholder:text-n-1/50 focus:border-none active:border-none"
-                  placeholder="Full name"
-                  {...field}
-                />
-              </div>
-            </CustomInput>
-          )}
+          icon={<HiOutlineUser className="text-xl" />}
+          placeholder="Full name"
+          label="Full name"
         />
-        <FormField
+
+        <CustomFormField
           control={form.control}
           name="email"
-          render={({ field }) => (
-            <CustomInput label="Email address" error={email?.message}>
-              <HiOutlineMail />
-              <input
-                className="w-full rounded-md border-none bg-transparent outline-none placeholder:text-n-1/50 focus:border-none active:border-none"
-                placeholder="dorra@codes.io"
-                {...field}
-              />
-            </CustomInput>
-          )}
+          label="Email address"
+          icon={<HiOutlineMail className="text-xl" />}
+          placeholder="dorra@codes.io"
         />
+
         <div className="space-y-2">
           <CustomPhoneInput
             control={form.control}
