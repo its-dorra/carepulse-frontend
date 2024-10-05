@@ -47,6 +47,7 @@ const SignUpForm: FC = () => {
           icon={<HiOutlineUser className="text-xl" />}
           placeholder="Full name"
           label="Full name"
+          error={fullName?.message}
         />
 
         <CustomFormField
@@ -55,6 +56,7 @@ const SignUpForm: FC = () => {
           label="Email address"
           icon={<HiOutlineMail className="text-xl" />}
           placeholder="dorra@codes.io"
+          error={email?.message}
         />
 
         <div className="space-y-2">
