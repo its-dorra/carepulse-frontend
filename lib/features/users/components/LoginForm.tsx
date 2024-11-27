@@ -31,6 +31,7 @@ const LoginForm: FC = () => {
 
   const {
     formState: {
+      isSubmitting,
       errors: { email, phoneNumber },
     },
   } = form;
@@ -76,7 +77,7 @@ const LoginForm: FC = () => {
         </div>
 
         <Button
-          disabled={isPending}
+          disabled={isSubmitting||isPending}
           className="w-full bg-primaryGreen"
           type="submit"
         >

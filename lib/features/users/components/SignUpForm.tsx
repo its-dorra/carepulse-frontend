@@ -20,6 +20,8 @@ import { HiOutlineMail, HiOutlinePhone, HiOutlineUser } from "react-icons/hi";
 import { PhoneInput } from "./phone-input";
 import CustomPhoneInput from "./custom-phone-input";
 import CustomFormField from "@/lib/components/ui/CustomFormField";
+import { useRouter } from "next/navigation";
+import { useSignUpUser } from "@/lib/features/users/hooks/useSignUpUser";
 
 const SignUpForm: FC = () => {
   const form = useForm<z.infer<typeof SignUpFormSchema>>({
@@ -31,13 +33,26 @@ const SignUpForm: FC = () => {
     },
   });
 
+  const router = useRouter()
+
+  const {mutate , isPending} = useSignUpUser()
+
+
   const {
     formState: {
+      isSubmitting,
       errors: { fullName, email, phoneNumber },
     },
   } = form;
 
-  const onSubmit = function (values: z.infer<typeof SignUpFormSchema>) {};
+  const onSubmit = function (values: z.infer<typeof SignUpFormSchema>) {
+    console.log({values})
+    mutate(values , {
+      onSuccess : () => {
+        router.replace('/new-appointment')
+      }
+    })
+  };
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
@@ -69,7 +84,7 @@ const SignUpForm: FC = () => {
           />
         </div>
 
-        <Button className="w-full bg-primaryGreen" type="submit">
+        <Button disabled={isSubmitting || isPending} className="w-full bg-primaryGreen" type="submit">
           Get Started
         </Button>
       </form>

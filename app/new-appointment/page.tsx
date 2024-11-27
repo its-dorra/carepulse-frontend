@@ -3,6 +3,8 @@ import NewAppointmentForm from "@/lib/components/NewAppointmentForm";
 
 import Image from "next/image";
 
+
+
 export default function NewAppointment() {
   return (
     <main className="flex h-dvh w-dvw items-center justify-center">
