@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import QueryProvider from "@/lib/contexts/QueryContext";
+import { Toaster } from "@/lib/components/ui/toaster";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -22,7 +23,10 @@ export default function RootLayout({
       <body
         className={`${plusJakarta.className} flex items-center justify-center bg-background text-white`}
       >
-        <QueryProvider>{children}</QueryProvider>
+        <QueryProvider>
+          {children}
+          <Toaster />
+        </QueryProvider>
       </body>
     </html>
   );

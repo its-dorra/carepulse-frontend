@@ -10,6 +10,7 @@ export default function CustomFormField({
   name,
   textArea,
   error,
+  inputType,
 }: {
   control: any;
   label: string;
@@ -18,6 +19,7 @@ export default function CustomFormField({
   icon?: ReactNode;
   textArea?: boolean;
   error?: string;
+  inputType?: string;
 }) {
   return (
     <FormField
@@ -37,6 +39,7 @@ export default function CustomFormField({
               {icon && icon}
               <input
                 className="w-full border-none bg-transparent text-xs outline-none placeholder:text-[12px] placeholder:text-n-1/50 focus:border-none active:border-none"
+                type={inputType || "text"}
                 placeholder={placeholder}
                 {...field}
               />

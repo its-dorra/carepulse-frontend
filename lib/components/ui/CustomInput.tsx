@@ -20,7 +20,9 @@ export default function CustomInput({
             </div>
           </div>
           {error && (
-            <span className="text-xs font-semibold text-red-500">{error}</span>
+            <span className="mt-2 block w-fit rounded-sm bg-red-100 px-2 py-1 text-xs font-semibold text-red-400">
+              {error}
+            </span>
           )}
         </div>
       </FormControl>

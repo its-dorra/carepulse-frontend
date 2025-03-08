@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { getLastAppointment } from "@/actions/appointmentsActions";
 import { animationSuccess, logo } from "@/assets";
 import DoctorTile from "@/lib/components/DoctorTile";
@@ -25,12 +26,11 @@ export default async function SuccessApointment({
       <div className="flex h-full w-full max-w-[1080px] flex-col items-center justify-start gap-y-2 p-4 py-16 md:px-14 lg:max-h-[800px]">
         <Image className="mb-16" src={logo} alt="logo" />
         <div className="flex w-full flex-col items-center space-y-4">
-          <Image
-            src={animationSuccess}
+          <img
+            src={animationSuccess.src}
             width={200}
             height={200}
             alt="animation success"
-            unoptimized
           />
           <p className="text-center text-[22px] font-bold md:w-[28rem] md:text-3xl">
             Your{" "}

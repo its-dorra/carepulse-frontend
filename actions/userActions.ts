@@ -42,14 +42,17 @@ export async function loginAdmin(pinCode: string) {
 export async function loginUser({
   email,
   phoneNumber,
+  password,
 }: {
   email: string;
   phoneNumber: string;
+  password: string;
 }) {
   try {
     const { data } = await privateAxios.post("/auth/login", {
       email,
       phoneNumber,
+      password,
     });
 
     return data as { message: string; status: "registered" | "notRegistered" };
@@ -62,16 +65,19 @@ export async function signUp({
   email,
   fullName,
   phoneNumber,
+  password,
 }: {
   email: string;
   fullName: string;
   phoneNumber: string;
+  password: string;
 }) {
   try {
     const { data } = await privateAxios.post("/auth/signup", {
       email,
       fullName,
       phoneNumber,
+      password,
     });
 
     return data as { message: string };

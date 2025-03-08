@@ -9,4 +9,7 @@ export default z.object({
       message: "Provide a valid phone number.",
     })
     .transform((val) => (val === "" ? "" : val)),
+  password: z
+    .string()
+    .min(8, { message: "Password must be at least 8 characters long." }),
 });

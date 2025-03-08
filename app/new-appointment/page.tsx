@@ -3,7 +3,10 @@ import NewAppointmentForm from "@/lib/components/NewAppointmentForm";
 
 import Image from "next/image";
 
-
+export const metadata = {
+  title: "New Appointment",
+  description: "Request a new appointment",
+};
 
 export default function NewAppointment() {
   return (

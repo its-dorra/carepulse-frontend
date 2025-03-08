@@ -1,6 +1,6 @@
 "use client";
 
-import { FC, useState } from "react";
+import { FC, useState, useTransition } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -16,7 +16,11 @@ import {
 
 import SignUpFormSchema from "@/lib/schemas/SignUpFormSchema";
 import CustomInput from "../../../components/ui/CustomInput";
-import { HiOutlineMail, HiOutlinePhone, HiOutlineUser } from "react-icons/hi";
+import {
+  HiOutlineDotsHorizontal,
+  HiOutlineMail,
+  HiOutlineUser,
+} from "react-icons/hi";
 import { PhoneInput } from "./phone-input";
 import CustomPhoneInput from "./custom-phone-input";
 import CustomFormField from "@/lib/components/ui/CustomFormField";
@@ -30,8 +34,10 @@ const SignUpForm: FC = () => {
       fullName: "",
       email: "",
       phoneNumber: "",
+      password: "",
     },
   });
+  const [isNavigating, startTransition] = useTransition();
 
   const router = useRouter();
 
@@ -40,14 +46,17 @@ const SignUpForm: FC = () => {
   const {
     formState: {
       isSubmitting,
-      errors: { fullName, email, phoneNumber },
+
+      errors: { fullName, email, phoneNumber, password },
     },
   } = form;
 
   const onSubmit = function (values: z.infer<typeof SignUpFormSchema>) {
     mutate(values, {
       onSuccess: () => {
-        router.replace("/new-appointment");
+        startTransition(() => {
+          router.replace("/new-appointment");
+        });
       },
     });
   };
@@ -72,6 +81,16 @@ const SignUpForm: FC = () => {
           error={email?.message}
         />
 
+        <CustomFormField
+          control={form.control}
+          name="password"
+          label="Password"
+          icon={<HiOutlineDotsHorizontal className="text-xl" />}
+          placeholder="*********"
+          error={password?.message}
+          inputType="password"
+        />
+
         <div className="space-y-2">
           <CustomPhoneInput
             control={form.control}
@@ -83,7 +102,7 @@ const SignUpForm: FC = () => {
         </div>
 
         <Button
-          disabled={isSubmitting || isPending}
+          disabled={isSubmitting || isPending || isNavigating}
           className="w-full bg-primaryGreen"
           type="submit"
         >
