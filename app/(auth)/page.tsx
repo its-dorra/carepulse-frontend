@@ -3,6 +3,7 @@ import AdminButton from "@/lib/features/users/components/admin-button";
 import LoginForm from "@/lib/features/users/components/LoginForm";
 import { Metadata } from "next";
 import Image from "next/image";
+import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Login to Carepulse",
@@ -19,6 +20,12 @@ export default function Login() {
           <p className="text-sm text-n-1">Get Started with Appointments.</p>
         </div>
         <LoginForm />
+      </div>
+      <div className="flex items-center gap-x-1">
+        <p className="text-xs text-white/70">Don&apos;t have and account?</p>
+        <Link className="text-xs text-primaryGreen" href="/signup">
+          Create an account
+        </Link>
       </div>
       <div className="flex items-center justify-between">
         <p className="text-n-1">©carepulse copyright</p>

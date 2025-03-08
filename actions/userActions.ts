@@ -69,11 +69,9 @@ export async function signUp({
 }) {
   try {
     const { data } = await privateAxios.post("/auth/signup", {
-      json: {
-        email,
-        fullName,
-        phoneNumber,
-      },
+      email,
+      fullName,
+      phoneNumber,
     });
 
     return data as { message: string };

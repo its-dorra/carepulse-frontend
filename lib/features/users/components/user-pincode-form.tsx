@@ -22,11 +22,7 @@ export default function UserPinCodeForm({ length }: { length: number }) {
   const { mutate, isPending } = useUserPinCode();
 
   const onSubmit: SubmitHandler<AdminFormType> = ({ pinCode }) => {
-    mutate(pinCode, {
-      onSuccess: (res) => {
-        console.log({ res });
-      },
-    });
+    mutate(pinCode);
   };
 
   return (

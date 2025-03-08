@@ -33,10 +33,9 @@ const SignUpForm: FC = () => {
     },
   });
 
-  const router = useRouter()
+  const router = useRouter();
 
-  const {mutate , isPending} = useSignUpUser()
-
+  const { mutate, isPending } = useSignUpUser();
 
   const {
     formState: {
@@ -46,12 +45,11 @@ const SignUpForm: FC = () => {
   } = form;
 
   const onSubmit = function (values: z.infer<typeof SignUpFormSchema>) {
-    console.log({values})
-    mutate(values , {
-      onSuccess : () => {
-        router.replace('/new-appointment')
-      }
-    })
+    mutate(values, {
+      onSuccess: () => {
+        router.replace("/new-appointment");
+      },
+    });
   };
   return (
     <Form {...form}>
@@ -84,7 +82,11 @@ const SignUpForm: FC = () => {
           />
         </div>
 
-        <Button disabled={isSubmitting || isPending} className="w-full bg-primaryGreen" type="submit">
+        <Button
+          disabled={isSubmitting || isPending}
+          className="w-full bg-primaryGreen"
+          type="submit"
+        >
           Get Started
         </Button>
       </form>
