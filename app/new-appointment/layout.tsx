@@ -14,5 +14,6 @@ export default async function Layout({ children }: PropsWithChildren) {
   if (!user || user.role === "admin") return redirect("/");
 
   if (user.status === "notRegistered") return redirect("/patient-info");
-  return { children };
+
+  return children;
 }
